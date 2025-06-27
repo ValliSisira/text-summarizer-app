@@ -42,19 +42,21 @@ cd text-summarizer-app
 ```
 
 
+📁 Folder Structure
+
 text-summarizer-app/
-│
-├── app.py                        # Main Flask app
-├── huggingface_summarization.py # Abstractive summary logic (BART)
-├── nltk_summarization.py        # Extractive summarizer using NLTK
-├── spacy_summarization.py       # Extractive summarizer using spaCy
-├── templates/
-│   ├── index.html               # Homepage UI
-│   └── compare_summary.html     # Comparison UI
-├── static/
-│   └── style.css                # Custom CSS
-├── requirements.txt             # Required Python packages
-└── README.md                    # This file
+
+app.py – Main Flask application
+huggingface_summarization.py – Abstractive summarization logic using BART
+nltk_summarization.py – Extractive summarizer using NLTK
+spacy_summarization.py – Extractive summarizer using spaCy
+requirements.txt – Python dependencies
+README.md – Project documentation
+templates/
+index.html – Homepage interface for summarizing text or URL
+compare_summary.html – Interface to compare summaries using different methods
+static/
+style.css – Custom CSS styling for the application
 
 
 ## 📸 Screenshots
