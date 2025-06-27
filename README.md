@@ -21,7 +21,7 @@ This is a Flask-based web application that allows users to generate **abstractiv
 - **NLP Models:** 
   - Abstractive: `facebook/bart-large-cnn` (via Hugging Face Transformers)
   - Extractive: NLTK, spaCy, Sumy LexRank
-- **Frontend:** Tailwind CSS
+- **Frontend:** HTML, Tailwind CSS
 - **Parsing:** BeautifulSoup (for scraping webpage content)
 
 ---
