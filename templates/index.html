@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Text Summarizer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body class="bg-gradient-to-b from-gray-100 via-blue-50 to-white text-gray-800 font-sans">
+  <!-- Navbar -->
+  <nav class="sticky top-0 z-50 bg-gray-900 text-white px-6 py-4 shadow-md flex justify-between items-center">
+    <h1 class="text-xl font-bold">Text Summarizer</h1>
+    <div class="space-x-4">
+      <a href="{{ url_for('index') }}" class="hover:underline">Home</a>
+      <a href="{{ url_for('compare_summary') }}" class="hover:underline">Compare</a>
+    </div>
+  </nav>
+
+  <main class="max-w-4xl mx-auto mt-10 px-6 space-y-12">
+
+    <!-- TEXT INPUT FORM -->
+    <form method="POST" action="/home" class="bg-white p-6 rounded-xl shadow-md space-y-6">
+      <label for="summarizer-text" class="block font-semibold text-lg">Enter text to summarize</label>
+      <textarea id="summarizer-text" name="text" rows="8" required placeholder="Paste your text here..." class="w-full p-3 border rounded-md bg-gray-50">{{ ctext if request.path=="/home" else "" }}</textarea>
+
+      <div class="flex flex-wrap gap-4">
+        <button name="method" value="openai" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Abstractive (GPT)</button>
+        <button name="method" value="nltk" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">NLTK Extractive</button>
+        <button name="method" value="spacy" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">spaCy Extractive</button>
+        <button type="reset" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Clear</button>
+      </div>
+    </form>
+
+    <!-- URL INPUT FORM BELOW TEXT INPUT -->
+    <form method="POST" action="/analyze_url" class="bg-white p-6 rounded-xl shadow-md space-y-6">
+      <label for="url-input" class="block font-semibold text-lg">Or summarize from a webpage URL</label>
+      <input id="url-input" name="raw_url" type="url" required placeholder="https://example.com/article" class="w-full p-3 border rounded-md bg-gray-50" value="{{ request.form.raw_url if request.path=='/analyze_url' else '' }}" />
+
+      <div class="flex flex-wrap gap-4">
+        <button type="submit" class="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700">Summarize URL</button>
+        <button type="reset" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Clear</button>
+      </div>
+    </form>
+
+    <!-- RESULTS SECTION -->
+    {% if summary %}
+    <section class="bg-white p-6 rounded-lg shadow space-y-2" data-summary>
+      <h2 class="text-lg font-bold">Input Text</h2>
+      <p class="text-sm text-gray-500">Reading time: {{ final_reading_time|default(0)|round(2) }} mins | Time taken: {{ final_time|default(0)|round(2) }} secs</p>
+      <p class="mt-2 whitespace-pre-wrap">{{ ctext }}</p>
+    </section>
+
+    <section class="bg-green-50 mt-4 p-6 rounded-lg shadow" data-summary>
+      <h2 class="text-lg font-bold text-green-800">Summary</h2>
+      <p class="mt-2 text-gray-700 whitespace-pre-wrap">{{ summary }}</p>
+      <p class="mt-4 text-sm text-gray-500">Reading time: {{ summary_reading_time|default(0)|round(2) }} mins</p>
+    </section>
+    {% endif %}
+  </main>
+
+  <!-- Optional JS: Clear summary on reset -->
+  <script>
+    document.querySelectorAll('form button[type="reset"]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('[data-summary]').forEach(el => el.remove());
+      });
+    });
+  </script>
+
+</body>
+</html>

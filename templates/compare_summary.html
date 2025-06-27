@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Compare Summaries</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body class="bg-gradient-to-b from-gray-100 via-blue-50 to-white text-gray-800 font-sans">
+  <!-- Navbar -->
+  <nav class="sticky top-0 z-50 bg-gray-900 text-white px-6 py-4 shadow-md flex justify-between items-center">
+    <h1 class="text-xl font-bold">Text Summarizer</h1>
+    <div class="space-x-4">
+      <a href="{{ url_for('index') }}"           class="hover:underline">Home</a>
+      <a href="{{ url_for('compare_summary') }}" class="hover:underline">Compare</a>
+    </div>
+  </nav>
+
+  <!-- Main container -->
+  <main class="max-w-5xl mx-auto mt-10 px-6 space-y-12">
+
+    <!-- Input form -->
+    <form method="POST" action="/comparer"
+          class="bg-white p-6 rounded-xl shadow-md space-y-6">
+      <label class="block font-semibold text-lg" for="rawtext">
+        Enter text to compare summarization methods
+      </label>
+
+      <textarea id="rawtext" name="rawtext" rows="8" required
+                placeholder="Paste your text here…"
+                class="w-full p-3 border rounded-md bg-gray-50">{{ ctext if ctext else '' }}</textarea>
+
+      <div class="flex flex-wrap gap-4">
+        <button type="submit"
+                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+          Compare
+        </button>
+
+        <!-- NEW Clear button -->
+        <button type="reset"
+                class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+          Clear
+        </button>
+      </div>
+    </form>
+
+    {% if final_summary_spacy %}
+    <!-- Input text card -->
+    <section class="bg-white p-6 rounded-lg shadow space-y-2" data-summary>
+      <h2 class="text-lg font-bold">Input Text</h2>
+      <p class="text-sm text-gray-500">
+        Reading&nbsp;time: {{ final_reading_time|default(0)|round(2) }} mins |
+        Time&nbsp;taken: {{ final_time|default(0)|round(2) }} secs
+      </p>
+      <p class="mt-2 whitespace-pre-wrap">{{ ctext }}</p>
+    </section>
+
+    <!-- Results grid -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-6" data-summary>
+      <!-- NLTK card -->
+      <div class="bg-green-50 p-6 rounded-lg shadow">
+        <h3 class="text-lg font-bold text-green-800">NLTK Extractive</h3>
+        <p class="text-sm text-gray-500 mt-1">
+          Reading&nbsp;time: {{ summary_reading_time_nltk|default(0)|round(2) }} mins
+        </p>
+        <p class="mt-2 text-gray-700 whitespace-pre-wrap">{{ final_summary_nltk }}</p>
+      </div>
+
+      <!-- SpaCy card -->
+      <div class="bg-indigo-50 p-6 rounded-lg shadow">
+        <h3 class="text-lg font-bold text-indigo-800">spaCy Extractive</h3>
+        <p class="text-sm text-gray-500 mt-1">
+          Reading&nbsp;time: {{ summary_reading_time_spacy|default(0)|round(2) }} mins
+        </p>
+        <p class="mt-2 text-gray-700 whitespace-pre-wrap">{{ final_summary_spacy }}</p>
+      </div>
+
+      <!-- Sumy card -->
+      <div class="bg-yellow-50 p-6 rounded-lg shadow">
+        <h3 class="text-lg font-bold text-yellow-800">Sumy LexRank</h3>
+        <p class="text-sm text-gray-500 mt-1">
+          Reading&nbsp;time: {{ summary_reading_time_sumy|default(0)|round(2) }} mins
+        </p>
+        <p class="mt-2 text-gray-700 whitespace-pre-wrap">{{ final_summary_sumy }}</p>
+      </div>
+    </section>
+    {% endif %}
+  </main>
+
+  <!-- JS: remove summary sections on Clear -->
+  <script>
+    document.querySelector('form button[type="reset"]')
+            .addEventListener('click', () => {
+                document.querySelectorAll('[data-summary]').forEach(el => el.remove());
+            });
+  </script>
+
+</body>
+</html>
