@@ -1,17 +1,17 @@
-# 🧠 Text Summarizer Web App
+#  Text Summarizer Web App
 
 This is a Flask-based web application that allows users to generate **abstractive** and **extractive** summaries from either raw text input or a public webpage URL.
 
-## ✨ Features
+##  Features
 
 - 📝 Summarize raw input text using:
   - **Abstractive (GPT-style)** via Hugging Face BART (`facebook/bart-large-cnn`)
   - **Extractive summarization** using NLTK, spaCy, or Sumy LexRank
-- 🌐 Summarize content directly from any **public webpage URL**
-- 🆚 Compare output across multiple extractive methods
-- 🧮 Displays estimated reading time and processing time
-- 🌈 Built with Tailwind CSS for a responsive and modern UI
-- 🧼 Includes **Clear** buttons and smooth user experience enhancements
+-  Summarize content directly from any **public webpage URL**
+-  Compare output across multiple extractive methods
+-  Displays estimated reading time and processing time
+-  Built with Tailwind CSS for a responsive and modern UI
+-  Includes **Clear** buttons and smooth user experience enhancements
 
 ---
 
