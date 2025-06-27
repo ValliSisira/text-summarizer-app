@@ -39,7 +39,7 @@ Make sure you have Python 3.7+ and `pip` installed.
 ```bash
 git clone https://github.com/your-username/text-summarizer-app.git
 cd text-summarizer-app
-```
+
 
 text-summarizer-app/
 │
